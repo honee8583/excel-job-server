@@ -1,4 +1,4 @@
-package com.playstory.exceljobserver.job;
+package com.playstory.exceljobserver.domain;
 
 public enum JobStatus {
     PENDING, PROCESSING, DONE, FAILED;

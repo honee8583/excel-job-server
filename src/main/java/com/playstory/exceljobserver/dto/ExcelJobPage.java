@@ -1,4 +1,6 @@
-package com.playstory.exceljobserver.job;
+package com.playstory.exceljobserver.dto;
+
+import com.playstory.exceljobserver.domain.ExcelJob;
 
 import java.util.List;
 

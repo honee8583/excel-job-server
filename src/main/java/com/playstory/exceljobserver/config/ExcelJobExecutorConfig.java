@@ -1,4 +1,4 @@
-package com.playstory.exceljobserver.job;
+package com.playstory.exceljobserver.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

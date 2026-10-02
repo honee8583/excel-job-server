@@ -1,5 +1,7 @@
-package com.playstory.exceljobserver.job;
+package com.playstory.exceljobserver.repository;
 
+import com.playstory.exceljobserver.domain.ExcelJob;
+import com.playstory.exceljobserver.domain.JobStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
