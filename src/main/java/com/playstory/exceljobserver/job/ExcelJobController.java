@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/jobs")
 @RequiredArgsConstructor
@@ -20,7 +18,7 @@ public class ExcelJobController {
     }
 
     @GetMapping
-    public List<ExcelJob> findAllJobs() {
-        return service.findAllJobs();
+    public ExcelJobPage findJobs(@RequestParam(required = false) Long cursor) {
+        return service.findJobs(cursor);
     }
 }

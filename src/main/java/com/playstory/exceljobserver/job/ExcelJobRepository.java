@@ -52,8 +52,10 @@ public class ExcelJobRepository {
                 .single();
     }
 
-    public List<ExcelJob> findAll() {
-        return jdbcClient.sql("SELECT * FROM excel_job ORDER BY id DESC")
+    public List<ExcelJob> findBefore(long cursor, int limit) {
+        return jdbcClient.sql("SELECT * FROM excel_job WHERE id < :cursor ORDER BY id DESC LIMIT :limit")
+                .param("cursor", cursor)
+                .param("limit", limit)
                 .query(ExcelJob.class)
                 .list();
     }

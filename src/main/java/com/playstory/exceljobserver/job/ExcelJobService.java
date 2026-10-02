@@ -14,6 +14,7 @@ import java.util.List;
 public class ExcelJobService {
 
     private static final int MAX_ERROR_MESSAGE_LENGTH = 1000;
+    private static final int PAGE_SIZE = 15;
 
     private final ExcelJobRepository repository;
     private final ExcelFileGenerator generator;
@@ -27,9 +28,15 @@ public class ExcelJobService {
         return job;
     }
 
-    // TODO 페이징 적용
-    public List<ExcelJob> findAllJobs() {
-        return repository.findAll();
+    public ExcelJobPage findJobs(Long cursor) {
+        List<ExcelJob> excelJobs = repository.findBefore(cursor == null ? Long.MAX_VALUE : cursor, PAGE_SIZE + 1);
+        if (excelJobs.size() <= PAGE_SIZE) {
+            return new ExcelJobPage(excelJobs, null);
+        }
+
+        List<ExcelJob> items = excelJobs.subList(0, PAGE_SIZE);
+
+        return new ExcelJobPage(items, items.getLast().id());
     }
 
     private void executeExcelJob(long id) {
