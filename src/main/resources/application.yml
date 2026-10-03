@@ -8,3 +8,5 @@ spring:
 
 excel:
   storage-dir: ${EXCEL_STORAGE_DIR:./data/excel}
+  # 근거: 허용할 최대 대기 시간 2분 / job 1개 처리 약 10초 = 약 12개 -> 10개 ?
+  max-active-jobs: ${EXCEL_MAX_ACTIVE_JOBS:10}

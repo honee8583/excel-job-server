@@ -47,6 +47,17 @@ public class ExcelJobRepository {
                 .update();
     }
 
+    /**
+     * 아직 끝나지 않은 job(pending: 큐에서 대기 중, processing: 생성 중)의 개수를 센다.
+     * 요청 폭주 방어에서 "지금 몇 개를 받아둔 상태인지" 판단하는 기준이다.
+     */
+    public long countActive() {
+        return jdbcClient.sql("SELECT COUNT(*) FROM excel_job WHERE status IN (:statuses)")
+                .param("statuses", List.of(JobStatus.PENDING.value(), JobStatus.PROCESSING.value()))
+                .query(Long.class)
+                .single();
+    }
+
     public ExcelJob findById(long id) {
         return jdbcClient.sql("SELECT * FROM excel_job WHERE id = :id")
                 .param("id", id)

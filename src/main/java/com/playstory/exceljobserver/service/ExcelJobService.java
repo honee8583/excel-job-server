@@ -2,9 +2,11 @@ package com.playstory.exceljobserver.service;
 
 import com.playstory.exceljobserver.domain.ExcelJob;
 import com.playstory.exceljobserver.dto.ExcelJobPage;
+import com.playstory.exceljobserver.exception.TooManyJobsException;
 import com.playstory.exceljobserver.repository.ExcelJobRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,14 @@ public class ExcelJobService {
     private final ExcelFileGenerator generator;
     private final ThreadPoolTaskExecutor excelJobExecutor;
 
-    public ExcelJob generateExcel() {
+    @Value("${excel.max-active-jobs}")
+    private int maxActiveJobs;
+
+    public synchronized ExcelJob generateExcel() {
+        if (repository.countActive() >= maxActiveJobs) {
+            throw new TooManyJobsException();
+        }
+
         long id = repository.insertPending();
         ExcelJob job = repository.findById(id);
         excelJobExecutor.execute(() -> executeExcelJob(id));

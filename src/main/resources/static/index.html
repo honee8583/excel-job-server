@@ -143,6 +143,11 @@
     btn.disabled = true; // 연타로 인한 중복 요청 방지
     try {
       const res = await fetch('/api/jobs', { method: 'POST' });
+
+      if (res.status === 429) {
+        alert((await res.json()).message);
+        return;
+      }
       if (!res.ok) throw new Error(res.status);
       await load();
     } catch (err) {
